@@ -27,4 +27,4 @@ The build is minified and the filenames include the hashes.\
 
 Your app is ready to be deployed!
 
-NOTE - In Contact.js and Newsletter.js, API KEY r not included for security purposes
+NOTE - In Contact.js and Newsletter.js, API KEYS are not included for security purposes

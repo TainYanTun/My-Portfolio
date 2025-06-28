@@ -18,9 +18,9 @@ npm run dev
 ```
 Open http://localhost:3000 in your browser to see the result.
 
-app/ – Main app pages and components
-public/ – Static assets (images, favicon, etc.)
-styles/ – CSS or other style files
+- app/ – Main app pages and components
+- public/ – Static assets (images, favicon, etc.)
+- styles/ – CSS or other style files
 
 ## License
 

@@ -39,7 +39,7 @@ const Profile = () => {
                         <div className="flex-1 text-center md:text-left space-y-6">
                             <div>
                                 <h3 className="text-2xl font-light text-white mb-2">
-                                    Alex Johnson
+                                    Tain Yan Tun (Derek)
                                 </h3>
                                 <p className="text-gray-400 text-lg">Full Stack Developer</p>
                             </div>
@@ -49,7 +49,7 @@ const Profile = () => {
                                     <div>
                                         <span className="text-gray-500">Location:</span>
                                         <span className="text-gray-300 ml-2">
-                                            San Francisco, CA
+                                            Muak Lek, Saraburi, Thailand
                                         </span>
                                     </div>
                                     <div>
@@ -59,7 +59,7 @@ const Profile = () => {
                                     <div>
                                         <span className="text-gray-500">Email:</span>
                                         <span className="text-gray-300 ml-2">
-                                            alex@example.com
+                                            leotainyan18@gmail.com
                                         </span>
                                     </div>
                                     <div>
@@ -69,9 +69,7 @@ const Profile = () => {
                                 </div>
 
                                 <p className="text-gray-300 leading-relaxed">
-                                    Passionate developer focused on creating efficient, scalable
-                                    solutions. Experienced in modern web technologies and clean
-                                    code practices.
+                                    Undergraduate developing efficient, scalable solutions using modern web technologies
                                 </p>
 
                                 <div className="pt-4">

@@ -25,7 +25,3 @@ Open http://localhost:3000 in your browser to see the result.
 ## License
 
 This project is for personal use. Feel free to explore the code, but please contact me before reusing or publishing it elsewhere.
-
-=======
-# My-Portfolio
-Personal portfolio showcasing my projects, skills, and experience.

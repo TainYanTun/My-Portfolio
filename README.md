@@ -29,4 +29,3 @@ This project is for personal use. Feel free to explore the code, but please cont
 =======
 # My-Portfolio
 Personal portfolio showcasing my projects, skills, and experience.
->>>>>>> d1d063fc23e4cdbcde03c7939497b8a14e630389

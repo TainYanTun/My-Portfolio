@@ -26,7 +26,7 @@ const Profile = () => {
                     <div className="flex flex-col md:flex-row items-center gap-12">
                         {/* Profile Image */}
                         <div className="flex-shrink-0">
-                            <div className="w-48 h-48 rounded-full bg-gray-800 overflow-hidden">
+                            <div className="w-48 h-48 rounded-full bg-gray-800 overflow-hidden border-2 border-gray-700 hover:border-gray-500 transition-all duration-300">
                                 <img
                                     src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400"
                                     alt="Profile"
@@ -75,15 +75,20 @@ const Profile = () => {
                                 <div className="pt-4">
                                     <button
                                         onClick={handleDownloadCV}
-                                        className="inline-flex items-center space-x-2 bg-white text-black px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200"
+                                        className="group relative inline-flex items-center space-x-2 px-4 py-2.5 bg-transparent border border-white/20 rounded-lg text-white overflow-hidden transition-all duration-300 hover:border-white/40 hover:bg-white/5"
                                     >
-                                        <Download size={18} />
-                                        <span>Download CV</span>
+                                        {/* Animated underline effect */}
+                                        <span className="absolute bottom-0 left-0 w-full h-px bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                                        
+                                        {/* Download icon with lift effect */}
+                                        <Download size={16} className="transition-transform duration-300 group-hover:-translate-y-0.5" />
+                                        
+                                        {/* Text with subtle glow */}
+                                        <span className="text-sm font-medium group-hover:text-white/90">Download CV</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        {/* End Profile Info */}
                     </div>
                 </div>
             </div>

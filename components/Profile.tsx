@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { Download } from 'lucide-react';
+import { Download, Github, Linkedin, Facebook, Instagram } from 'lucide-react';
 
 const Profile = () => {
     const handleDownloadCV = () => {
@@ -11,6 +11,33 @@ const Profile = () => {
         link.click();
         document.body.removeChild(link);
     };
+
+    const socialLinks = [
+        { 
+            icon: <Github size={18} />,
+            href: 'https://github.com/yourusername',
+            label: 'GitHub',
+            color: 'hover:text-gray-300'
+        },
+        { 
+            icon: <Linkedin size={18} />,
+            href: 'https://linkedin.com/in/yourusername',
+            label: 'LinkedIn',
+            color: 'hover:text-blue-400'
+        },
+        { 
+            icon: <Facebook size={18} />,
+            href: 'https://facebook.com/yourusername',
+            label: 'Facebook',
+            color: 'hover:text-blue-500'
+        },
+        { 
+            icon: <Instagram size={18} />,
+            href: 'https://instagram.com/yourusername',
+            label: 'Instagram',
+            color: 'hover:text-pink-500'
+        }
+    ];
 
     return (
         <section id="profile" className="py-20 px-6">
@@ -41,7 +68,7 @@ const Profile = () => {
                                 <h3 className="text-2xl font-light text-white mb-2">
                                     Tain Yan Tun (Derek)
                                 </h3>
-                                <p className="text-gray-400 text-lg">Full Stack Developer</p>
+                                <p className="text-gray-400 text-lg">Undergraduate Student</p>
                             </div>
 
                             <div className="space-y-4">
@@ -54,7 +81,7 @@ const Profile = () => {
                                     </div>
                                     <div>
                                         <span className="text-gray-500">Experience:</span>
-                                        <span className="text-gray-300 ml-2">5+ Years</span>
+                                        <span className="text-gray-300 ml-2">No work related</span>
                                     </div>
                                     <div>
                                         <span className="text-gray-500">Email:</span>
@@ -69,10 +96,10 @@ const Profile = () => {
                                 </div>
 
                                 <p className="text-gray-300 leading-relaxed">
-                                    Undergraduate developing efficient, scalable solutions using modern web technologies
+                                    I'm 19-year-old student focused on building efficient with modern web technologies.
                                 </p>
 
-                                <div className="pt-4">
+                                <div className="pt-4 flex flex-wrap items-center gap-4">
                                     <button
                                         onClick={handleDownloadCV}
                                         className="group relative inline-flex items-center space-x-2 px-4 py-2.5 bg-transparent border border-white/20 rounded-lg text-white overflow-hidden transition-all duration-300 hover:border-white/40 hover:bg-white/5"
@@ -86,6 +113,22 @@ const Profile = () => {
                                         {/* Text with subtle glow */}
                                         <span className="text-sm font-medium group-hover:text-white/90">Download CV</span>
                                     </button>
+
+                                    {/* Social Media Links */}
+                                    <div className="flex items-center space-x-3 ml-5">
+                                        {socialLinks.map((link, index) => (
+                                            <a
+                                                key={index}
+                                                href={link.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={`text-gray-400 ${link.color} transition-colors duration-300`}
+                                                aria-label={link.label}
+                                            >
+                                                {link.icon}
+                                            </a>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>

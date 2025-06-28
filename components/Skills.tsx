@@ -46,20 +46,12 @@ const Skills = () => {
         <section id="skills" className="py-20 px-6">
             <style jsx>{`
                 @keyframes marquee-right {
-                    0% {
-                        transform: translateX(-50%);
-                    }
-                    100% {
-                        transform: translateX(0%);
-                    }
+                    0% { transform: translateX(-50%); }
+                    100% { transform: translateX(0%); }
                 }
                 @keyframes marquee-left {
-                    0% {
-                        transform: translateX(0%);
-                    }
-                    100% {
-                        transform: translateX(-50%);
-                    }
+                    0% { transform: translateX(0%); }
+                    100% { transform: translateX(-50%); }
                 }
             `}</style>
             <div className="max-w-6xl mx-auto">
@@ -68,8 +60,7 @@ const Skills = () => {
                     <div className="w-12 h-px bg-gray-600 mx-auto"></div>
                 </div>
                 {/* Marquee Container */}
-                <div className="relative overflow-hidden"> {/* Added overflow-hidden here */}
-                    {/* Gradient overlays for fade effect */}
+                <div className="relative overflow-hidden">
                     <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10"></div>
                     <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10"></div>
                     {/* First row - moving right */}

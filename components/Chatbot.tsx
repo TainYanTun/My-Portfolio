@@ -1,204 +1,266 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot, ChevronDown, ChevronUp } from 'lucide-react';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+type Message = {
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: Date;
+};
 
 const Chatbot = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
-  const [messages, setMessages] = useState([
-    { 
-      text: "Hello! I'm your AI assistant. Ask me about skills, projects, or experience.", 
-      sender: 'bot',
-      timestamp: new Date()
-    }
-  ]);
-  const [inputValue, setInputValue] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [isTyping, setIsTyping] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isMinimized, setIsMinimized] = useState(false);
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            text: "Hello! I'm your AI assistant. Ask me about skills, projects, or experience.",
+            sender: 'bot',
+            timestamp: new Date(),
+        },
+    ]);
+    const [inputValue, setInputValue] = useState('');
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const [isTyping, setIsTyping] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+    const [apiError, setApiError] = useState<string | null>(null);
 
-  useEffect(() => {
-    setIsMounted(true);
-    return () => setIsMounted(false);
-  }, []);
+    // Initialize Gemini API
+    const initializeGemini = async (prompt: string) => {
+      try {
+        const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
+        const model = genAI.getGenerativeModel({ 
+          model: "gemini-1.5-flash", // Using the newer flash model
+          generationConfig: {
+            maxOutputTokens: 1000, // Limit response length
+            temperature: 0.7, // Control creativity
+          }
+        });
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+        const portfolioContext = `
+          You are an AI assistant for a professional portfolio website.
+          The portfolio owner specializes in:
+          - React, Next.js, TypeScript, JavaScript
+          - Node.js, Express
+          - Tailwind CSS, CSS frameworks
+          - Modern web development practices
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+          Key projects include:
+          - E-Commerce Platform: A modern e-commerce solution with React, Node.js, and Stripe integration.
+          - Task Management App: A collaborative task management app with real-time updates and team features.
 
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputValue.trim()) return;
+          Keep responses professional, concise (1-2 paragraphs max), and focused on:
+          - Technical skills
+          - Project details
+          - Professional experience
+          - Web development concepts
 
-    const userMessage = { 
-      text: inputValue, 
-      sender: 'user',
-      timestamp: new Date() 
+          If asked about unrelated topics, politely redirect to portfolio subjects.
+        `;
+
+        const fullPrompt = `${portfolioContext}\n\nQuestion: ${prompt}`;
+        
+        const result = await model.generateContent(fullPrompt);
+        const response = await result.response;
+        return response.text();
+      } catch (error) {
+        console.error('Gemini API Error:', error);
+        setApiError('Failed to get response from AI service');
+        return null;
+      }
     };
-    setMessages([...messages, userMessage]);
-    setInputValue('');
-    setIsTyping(true);
 
-    setTimeout(() => {
-      const responses = [
-        "The portfolio owner specializes in React, Next.js, and modern web development.",
-        "They have experience building full-stack applications with clean UI/UX.",
-        "Their skills include JavaScript, TypeScript, Node.js, and various CSS frameworks.",
-        "You can view their projects in the Projects section above.",
-        "They're proficient in both frontend development and backend APIs."
-      ];
-      const botMessage = { 
-        text: responses[Math.floor(Math.random() * responses.length)],
-        sender: 'bot',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMessage]);
-      setIsTyping(false);
-    }, 1000 + Math.random() * 2000);
-  };
+    useEffect(() => {
+        setIsMounted(true);
+        return () => setIsMounted(false);
+    }, []);
 
-  const toggleChat = () => {
-    setIsOpen(!isOpen);
-    if (isOpen) {
-      setIsMinimized(false);
-    }
-  };
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
-  return (
-    <div className={`fixed bottom-6 right-6 z-50 ${isMounted ? 'animate-float-in' : 'opacity-0'}`}>
-      {isOpen ? (
-        <div className={`w-80 ${isMinimized ? 'h-16' : 'h-[28rem]'} bg-gray-900/80 backdrop-blur-sm border border-gray-600/50 rounded-xl shadow-xl flex flex-col transition-all duration-300 overflow-hidden`}>
-          {/* Header */}
-          <div 
-            className="bg-gray-800/60 px-4 py-3 rounded-t-xl flex justify-between items-center cursor-pointer border-b border-gray-600/30"
-            onClick={() => setIsMinimized(!isMinimized)}
-          >
-            <div className="flex items-center space-x-2">
-              <Bot size={18} className="text-gray-300" />
-              <h3 className="font-medium text-white">Portfolio Assistant</h3>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsOpen(false);
-                }}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <X size={18} />
-              </button>
-              <button className="text-gray-400 hover:text-white transition-colors">
-                {isMinimized ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-              </button>
-            </div>
-          </div>
+    const handleSendMessage = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!inputValue.trim()) return;
+
+        const userMessage: Message = {
+            text: inputValue,
+            sender: 'user',
+            timestamp: new Date(),
+        };
+        
+        setMessages(prev => [...prev, userMessage]);
+        setInputValue('');
+        setIsTyping(true);
+        setApiError(null);
+
+        try {
+          const aiResponse = await initializeGemini(inputValue);
           
-          {!isMinimized && (
-            <>
-              <div className="flex-1 p-4 overflow-y-auto space-y-4">
-                {messages.map((msg, i) => (
-                  <div 
-                    key={i} 
-                    className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-message-in`}
-                  >
-                    <div 
-                      className={`max-w-xs px-3 py-2 rounded-xl relative ${msg.sender === 'user' 
-                        ? 'bg-gray-600/90 text-white rounded-br-none' 
-                        : 'bg-gray-700/80 text-white rounded-bl-none'}`}
-                    >
-                      <div className="text-sm">{msg.text}</div>
-                      <div className={`text-xs mt-1 opacity-60 ${msg.sender === 'bot' ? 'text-left' : 'text-right'}`}>
-                        {formatTime(msg.timestamp)}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                {isTyping && (
-                  <div className="flex justify-start animate-message-in">
-                    <div className="bg-gray-700/80 text-white px-3 py-2 rounded-xl rounded-bl-none max-w-xs">
-                      <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <div ref={messagesEndRef} />
-              </div>
-              
-              <form onSubmit={handleSendMessage} className="p-3 border-t border-gray-600/30 bg-gray-800/30">
-                <div className="flex space-x-2">
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Ask about skills or projects..."
-                    className="flex-1 bg-gray-700/50 text-white px-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-500/50 border border-gray-600/30 transition-all"
-                  />
-                  <button 
-                    type="submit"
-                    disabled={!inputValue.trim()}
-                    className="bg-gray-600/90 text-white p-2 rounded-lg hover:bg-gray-700/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-                  >
-                    <Send size={18} />
-                  </button>
-                </div>
-              </form>
-            </>
-          )}
-        </div>
-      ) : (
-        <button
-            onClick={toggleChat}
-            className="bg-gray-200 text-black p-4 rounded-full shadow-lg hover:bg-gray-300 transition-all duration-300 flex items-center justify-center group relative overflow-hidden"
-            >
-            <span className="absolute inset-0 bg-gradient-to-r from-gray-300/10 via-gray-300/30 to-gray-300/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -translate-x-full group-hover:translate-x-0"></span>
-            <MessageCircle size={24} className="relative text-black" />
-            {messages.length === 1 && (
-                <span className="absolute top-2 right-2 w-2 h-2 bg-gray-600 rounded-full animate-pulse"></span>
-            )}
-        </button>
-      )}
+          const botMessage: Message = {
+            text: aiResponse || "I couldn't process that request. Please try again.",
+            sender: 'bot',
+            timestamp: new Date(),
+          };
+          
+          setMessages(prev => [...prev, botMessage]);
+        } catch (error) {
+          console.error('Error:', error);
+          const errorMessage: Message = {
+            text: "Sorry, I'm experiencing technical difficulties. Please try again later.",
+            sender: 'bot',
+            timestamp: new Date(),
+          };
+          setMessages(prev => [...prev, errorMessage]);
+        } finally {
+          setIsTyping(false);
+        }
+    };
 
-      <style jsx>{`
-        @keyframes float-in {
-          0% {
-            opacity: 0;
-            transform: translateY(20px) scale(0.95);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
+    const toggleChat = () => {
+        setIsOpen(!isOpen);
+        if (isOpen) {
+            setIsMinimized(false);
         }
-        @keyframes message-in {
-          0% {
-            opacity: 0;
-            transform: translateY(5px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-float-in {
-          animation: float-in 0.3s ease-out forwards;
-        }
-        .animate-message-in {
-          animation: message-in 0.2s ease-out forwards;
-        }
-      `}</style>
-    </div>
-  );
+    };
+
+    const formatTime = (date: Date) => {
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+
+    return (
+        <div className={`fixed bottom-6 right-6 z-50 ${isMounted ? 'animate-float-in' : 'opacity-0'}`}>
+            {isOpen ? (
+                <div
+                    className={`w-80 ${isMinimized ? 'h-16' : 'h-[28rem]'} bg-gray-900/80 backdrop-blur-sm border border-gray-600/50 rounded-xl shadow-xl flex flex-col transition-all duration-300 overflow-hidden`}
+                >
+                    {/* Header */}
+                    <div
+                        className="bg-gray-800/60 px-4 py-3 rounded-t-xl flex justify-between items-center cursor-pointer border-b border-gray-600/30"
+                        onClick={() => setIsMinimized(!isMinimized)}
+                    >
+                        <div className="flex items-center space-x-2">
+                            <Bot size={18} className="text-gray-300" />
+                            <h3 className="font-medium text-white">Portfolio Assistant</h3>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setIsOpen(false);
+                                }}
+                                className="text-gray-400 hover:text-white transition-colors"
+                            >
+                                <X size={18} />
+                            </button>
+                            <button className="text-gray-400 hover:text-white transition-colors">
+                                {isMinimized ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                            </button>
+                        </div>
+                    </div>
+
+                    {!isMinimized && (
+                        <>
+                            <div className="flex-1 p-4 overflow-y-auto space-y-4">
+                                {messages.map((msg, i) => (
+                                    <div
+                                        key={i}
+                                        className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-message-in`}
+                                    >
+                                        <div
+                                            className={`max-w-xs px-3 py-2 rounded-xl relative ${
+                                                msg.sender === 'user'
+                                                    ? 'bg-gray-600/90 text-white rounded-br-none'
+                                                    : 'bg-gray-700/80 text-white rounded-bl-none'
+                                            }`}
+                                        >
+                                            <div className="text-sm">{msg.text}</div>
+                                            <div
+                                                className={`text-xs mt-1 opacity-60 ${
+                                                    msg.sender === 'bot' ? 'text-left' : 'text-right'
+                                                }`}
+                                            >
+                                                {formatTime(msg.timestamp)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                                {isTyping && (
+                                    <div className="flex justify-start animate-message-in">
+                                        <div className="bg-gray-700/80 text-white px-3 py-2 rounded-xl rounded-bl-none max-w-xs">
+                                            <div className="flex space-x-1">
+                                                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                {apiError && (
+                                    <div className="text-red-400 text-xs text-center mt-2">
+                                        {apiError}
+                                    </div>
+                                )}
+                                <div ref={messagesEndRef} />
+                            </div>
+
+                            <form
+                                onSubmit={handleSendMessage}
+                                className="p-3 border-t border-gray-600/30 bg-gray-800/30"
+                            >
+                                <div className="flex space-x-2">
+                                    <input
+                                        type="text"
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                        placeholder="Ask about skills or projects..."
+                                        className="flex-1 bg-gray-700/50 text-white px-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-500/50 border border-gray-600/30 transition-all"
+                                        disabled={isTyping}
+                                    />
+                                    <button
+                                        type="submit"
+                                        disabled={!inputValue.trim() || isTyping}
+                                        className="bg-gray-600/90 text-white p-2 rounded-lg hover:bg-gray-700/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                                    >
+                                        <Send size={18} />
+                                    </button>
+                                </div>
+                            </form>
+                        </>
+                    )}
+                </div>
+            ) : (
+                <button
+                    onClick={toggleChat}
+                    className="bg-gray-200 text-black p-4 rounded-full shadow-lg hover:bg-gray-300 transition-all duration-300 flex items-center justify-center group relative overflow-hidden"
+                    aria-label="Open chat"
+                >
+                    <span className="absolute inset-0 bg-gradient-to-r from-gray-300/10 via-gray-300/30 to-gray-300/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -translate-x-full group-hover:translate-x-0" />
+                    <MessageCircle size={24} className="relative text-black" />
+                    {messages.length === 1 && (
+                        <span className="absolute top-2 right-2 w-2 h-2 bg-gray-600 rounded-full animate-pulse" />
+                    )}
+                </button>
+            )}
+
+            <style jsx>{`
+                @keyframes float-in {
+                    0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+                    100% { opacity: 1; transform: translateY(0) scale(1); }
+                }
+                @keyframes message-in {
+                    0% { opacity: 0; transform: translateY(5px); }
+                    100% { opacity: 1; transform: translateY(0); }
+                }
+                .animate-float-in { animation: float-in 0.3s ease-out forwards; }
+                .animate-message-in { animation: message-in 0.2s ease-out forwards; }
+            `}</style>
+        </div>
+    );
 };
 
 export default Chatbot;

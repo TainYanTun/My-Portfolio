@@ -6,7 +6,7 @@ const Profile = () => {
     const handleDownloadCV = () => {
         const link = document.createElement('a');
         link.href = '/cv.pdf';
-        link.download = 'Alex_Johnson_CV.pdf';
+        link.download = 'Tainyantun_CV.pdf';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -55,7 +55,7 @@ const Profile = () => {
                         <div className="flex-shrink-0">
                             <div className="w-48 h-48 rounded-full bg-gray-800 overflow-hidden border-2 border-gray-700 hover:border-gray-500 transition-all duration-300">
                                 <img
-                                    src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400"
+                                    src="/profile.png"
                                     alt="Profile"
                                     className="w-full h-full object-cover"
                                 />

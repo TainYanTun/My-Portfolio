@@ -1,6 +1,7 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Send } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 type FormField = 'name' | 'email' | 'subject' | 'message';
 
@@ -13,6 +14,16 @@ const Contact = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [focusedField, setFocusedField] = useState<FormField | ''>('');
+    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+    // Initialize EmailJS once when component mounts
+    useEffect(() => {
+        if (process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
+            emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+        } else {
+            console.error("EmailJS public key is missing");
+        }
+    }, []);
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -25,11 +36,54 @@ const Contact = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        // Basic validation
+        if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+            setSubmitStatus('error');
+            alert('Please fill in all required fields');
+            return;
+        }
+
+        // Email validation
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            setSubmitStatus('error');
+            alert('Please enter a valid email address');
+            return;
+        }
+
         setIsSubmitting(true);
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        setIsSubmitting(false);
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        alert("Thanks for reaching out! I'll get back to you soon.");
+        setSubmitStatus('idle');
+
+        try {
+            if (!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 
+                !process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID) {
+                throw new Error("EmailJS configuration is incomplete");
+            }
+
+            const response = await emailjs.send(
+                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+                {
+                    from_name: formData.name,
+                    from_email: formData.email,
+                    subject: formData.subject || "No subject",
+                    message: formData.message,
+                }
+            );
+
+            if (response.status !== 200) {
+                throw new Error("Email service returned an error");
+            }
+
+            setFormData({ name: '', email: '', subject: '', message: '' });
+            setSubmitStatus('success');
+        } catch (error: unknown) {
+            console.error("Error details:", error);
+            setSubmitStatus('error');
+            alert('Failed to send message. Please try again later.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -44,7 +98,7 @@ const Contact = () => {
                     </h2>
                     <div className="w-16 h-px bg-gradient-to-r from-transparent via-gray-500 to-transparent mx-auto mb-6"></div>
                     <p className="text-gray-400 text-base leading-relaxed max-w-md mx-auto">
-                        If you need anything, Drop me a message below.
+                        If you need anything, drop me a message below.
                     </p>
                 </div>
 
@@ -55,9 +109,21 @@ const Contact = () => {
                             <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gray-700/10 via-transparent to-gray-600/10"></div>
                         </div>
 
+                        {submitStatus === 'success' && (
+                            <div className="mb-6 p-4 bg-green-900/30 border border-green-500/50 rounded-xl text-green-300">
+                                Message sent successfully! I'll get back to you soon.
+                            </div>
+                        )}
+
+                        {submitStatus === 'error' && (
+                            <div className="mb-6 p-4 bg-red-900/30 border border-red-500/50 rounded-xl text-red-300">
+                                Failed to send message. Please try again.
+                            </div>
+                        )}
+
                         <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                             {(['name', 'email', 'subject', 'message'] as FormField[]).map(
-                                field => (
+                                (field) => (
                                     <div key={field} className="relative group">
                                         {field !== 'message' ? (
                                             <input
@@ -67,7 +133,7 @@ const Contact = () => {
                                                 onChange={handleInputChange}
                                                 onFocus={() => setFocusedField(field)}
                                                 onBlur={() => setFocusedField('')}
-                                                required
+                                                required={field !== 'subject'}
                                                 className="w-full bg-gray-900/40 border border-gray-700/30 rounded-xl px-4 py-4 text-white placeholder-transparent focus:border-gray-500 focus:outline-none transition-all duration-300 peer"
                                                 placeholder={
                                                     field.charAt(0).toUpperCase() +
@@ -96,7 +162,7 @@ const Contact = () => {
                                         >
                                             {field === 'name' && 'Your Name'}
                                             {field === 'email' && 'Email Address'}
-                                            {field === 'subject' && 'Subject'}
+                                            {field === 'subject' && 'Subject (Optional)'}
                                             {field === 'message' && 'Your Message'}
                                         </label>
                                         <div
@@ -112,11 +178,12 @@ const Contact = () => {
                                 type="submit"
                                 disabled={isSubmitting}
                                 className="w-full bg-white/95 text-gray-900 py-4 px-6 rounded-xl font-medium hover:bg-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 group relative overflow-hidden"
+                                aria-label={isSubmitting ? 'Sending message' : 'Send message'}
                             >
                                 <span className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/30 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -translate-x-full group-hover:translate-x-0"></span>
                                 {isSubmitting ? (
                                     <>
-                                        <div className="w-4 h-4 border-2 border-gray-900/30 border-t-gray-900 rounded-full animate-spin"></div>
+                                        <div className="w-4 h-4 border-2 border-gray-900/30 border-t-gray-900 rounded-full animate-spin" aria-hidden="true"></div>
                                         <span>Sending...</span>
                                     </>
                                 ) : (
@@ -124,6 +191,7 @@ const Contact = () => {
                                         <Send
                                             size={18}
                                             className="transition-transform duration-300 group-hover:translate-x-1"
+                                            aria-hidden="true"
                                         />
                                         <span>Send Message</span>
                                     </>

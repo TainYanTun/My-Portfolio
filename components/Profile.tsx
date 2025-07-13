@@ -44,7 +44,7 @@ const Profile = () => {
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-light text-white mb-6">
-                        Profile
+                        Hi there!
                     </h2>
                     <div className="w-12 h-px bg-gray-600 mx-auto" />
                 </div>

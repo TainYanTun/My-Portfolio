@@ -78,8 +78,8 @@ const Hero = () => {
                         </span>
                     </h1>
 
-                    <div className="max-w-3xl mx-auto pt-8">
-                        <p className="text-gray-300 text-xl md:text-xl font-light leading-relaxed">
+                    <div className="max-w-3xl text-sm mx-auto pt-8">
+                        <p className="text-gray-300 text-lg md:text-base font-light leading-relaxed">
                             I take pride in crafting
                             <span className="text-white font-normal">
                                 {" "}

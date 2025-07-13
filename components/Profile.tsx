@@ -96,7 +96,7 @@ const Profile = () => {
                                 </div>
 
                                 <p className="text-gray-300 leading-relaxed">
-                                    I'm 19-year-old student focused on building efficient with modern web technologies.
+                                    Making Magic (And Meeting Deadlines)
                                 </p>
 
                                 <div className="pt-4 flex flex-wrap items-center gap-4">

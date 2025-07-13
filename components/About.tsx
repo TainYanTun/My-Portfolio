@@ -101,18 +101,19 @@ const About = () => {
             {/* Content */}
             {activeTab === "about" ? (
                 <div className="space-y-6">
-                    <div className="p-6 rounded-lg bg-gray-900/50">
+                    <div className="p-6 rounded-lg">
                         <h3 className="text-xl text-white mb-4 flex items-center gap-2">
                             <User size={20} />
-                            Who I Am
+                            Who Am I
                         </h3>
-                        <p className="text-gray-300 mb-4">
-                            I'm a passionate Computer Science student with a strong interest
-                            in full-stack development and machine learning. I love solving
-                            complex problems and building innovative solutions.
+                        <p className="text-sm text-gray-300 mb-4 leading-relaxed">
+                            Derek here! I’m a 19-year-old undergraduate student from Myanmar, currently studying in Thailand 🇹🇭 for my bachelor of science in information technology.
+                            <br /><br />
+                            <a className="text-gray-400 hover:text-red-300">I build accessible, UI focused digital experiences for the web.</a>
+                            <br /><br />
+                            For Q&A or general curiosity, You can find more about me on my <a href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" className="underline text-blue-400 hover:text-blue-300">LinkedIn profile</a> or my AI assistant.
                         </p>
                     </div>
-
                     <div className="grid md:grid-cols-2 gap-6">
                         <div className="p-6 rounded-lg bg-gray-900/50">
                             <h3 className="text-xl text-white mb-4 flex items-center gap-2">
@@ -146,6 +147,8 @@ const About = () => {
                                     "Machine Learning",
                                     "Cloud Computing",
                                     "UI/UX Design",
+                                    "Open Source",
+                                    "Data Base Management",
                                 ].map((interest) => (
                                     <span
                                         key={interest}
@@ -159,7 +162,7 @@ const About = () => {
                     </div>
                 </div>
             ) : activeTab === "work" ? (
-                <div className="text-center p-8 rounded-lg bg-gray-900/50">
+                <div className="text-center p-8 rounded-lg">
                     <Rocket size={40} className="mx-auto mb-4 text-gray-400" />
                     <h3 className="text-lg text-white mb-2">
                         No Work Experience Yet

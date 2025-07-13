@@ -4,9 +4,9 @@ import { MessageCircle, X, Send, Bot, ChevronDown, ChevronUp } from 'lucide-reac
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 type Message = {
-  text: string;
-  sender: 'user' | 'bot';
-  timestamp: Date;
+    text: string;
+    sender: 'user' | 'bot';
+    timestamp: Date;
 };
 
 const Chatbot = () => {
@@ -14,7 +14,7 @@ const Chatbot = () => {
     const [isMinimized, setIsMinimized] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
         {
-            text: "Hello! I'm your AI assistant. Ask me about skills, projects, or experience.",
+            text: "Hello! I'm Tain Yan Tun's AI assistant. Ask me about skills, projects, or experience.",
             sender: 'bot',
             timestamp: new Date(),
         },
@@ -27,47 +27,70 @@ const Chatbot = () => {
 
     // Initialize Gemini API
     const initializeGemini = async (prompt: string) => {
-      try {
-        const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
-        const model = genAI.getGenerativeModel({ 
-          model: "gemini-1.5-flash", // Using the newer flash model
-          generationConfig: {
-            maxOutputTokens: 1000, // Limit response length
-            temperature: 0.7, // Control creativity
-          }
-        });
+        try {
+            const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
+            const model = genAI.getGenerativeModel({
+                model: "gemini-1.5-flash",
+                generationConfig: {
+                    maxOutputTokens: 1000,
+                    temperature: 0.7,
+                }
+            });
 
-        const portfolioContext = `
-          You are an AI assistant for a professional portfolio website.
-          The portfolio owner specializes in:
-          - React, Next.js, TypeScript, JavaScript
-          - Node.js, Express
-          - Tailwind CSS, CSS frameworks
-          - Modern web development practices
+            const portfolioContext = `
+                Your are Derek's AI assistant so refer to derek as he as sperately.
+                You are an AI assistant for a professional portfolio website.
+                The portfolio owner specializes in:
+                - React, Next.js, TypeScript, JavaScript
+                - Node.js, Express
+                - Tailwind CSS, CSS frameworks
+                - Modern web development practices
 
-          Key projects include:
-          - E-Commerce Platform: A modern e-commerce solution with React, Node.js, and Stripe integration.
-          - Task Management App: A collaborative task management app with real-time updates and team features.
+                Key projects include:
+                - JitCyber Website: A 2025 Hackathon project focused on cybersecurity solutions mainly for Thai users.
+                - CV analyzer: A web app that analyzes your CV and provides insights and recommendations using google gemini AI.
 
-          Keep responses professional, concise (1-2 paragraphs max), and focused on:
-          - Technical skills
-          - Project details
-          - Professional experience
-          - Web development concepts
+                Keep responses professional, concise (1-2 paragraphs max), and focused on:
+                - Technical skills
+                - Project details
+                - Professional experience
+                - Web development concepts
 
-          If asked about unrelated topics, politely redirect to portfolio subjects.
-        `;
+                If asked about unrelated topics, politely redirect to portfolio subjects. Please answer what he only knows about, and if you don't know, say "I don't know" or "I can't answer that." Do not make up information.
 
-        const fullPrompt = `${portfolioContext}\n\nQuestion: ${prompt}`;
-        
-        const result = await model.generateContent(fullPrompt);
-        const response = await result.response;
-        return response.text();
-      } catch (error) {
-        console.error('Gemini API Error:', error);
-        setApiError('Failed to get response from AI service');
-        return null;
-      }
+                If asked about personal opinions or preferences, respond with "I don't have personal opinions, but I can provide information on the owner of this website."
+
+                If asked about Derek's hobbies, respond with "I don't have information about Derek's hobbies, but I can tell you about his professional skills and projects."
+
+                If asked about Derek's education, consider the following context:
+                - He passed GED in 2021, and he is currently a student at Asia Pacific International University pursuing a Bachelor of Science in Computer Science.
+
+                If asked about Derek's work experience, respond with Derek has no work experience as he is a student, but he has worked on several projects and such.
+
+                If asked about Derek's personal life, consider the following context:
+                - Name: Tain Yan Tun (Derek)
+                - Age: 19 years old
+                - Lives in Muak Lek, Saraburi Province, Thailand currently
+                - Born in 2006 in Mandalay, Myanmar
+                - Moved to Thailand in 2022
+                - Speaks Burmese, and English
+                - Interested in web development, cybersecurity, and AI technologies
+                - Attending Asia Pacific International University, majoring in Computer Science curretly as of junior year
+
+                If asked about Derek's personal preferences, respond with "Derek has not provided any personal preferences, but I can provide information on web development best practices and technologies."
+
+                Please answer what he only asks about.
+            `;
+
+            const fullPrompt = `${portfolioContext}\n\nQuestion: ${prompt}`;
+            const result = await model.generateContent(fullPrompt);
+            const response = await result.response;
+            return response.text();
+        } catch (error) {
+            console.error('Gemini API Error:', error);
+            setApiError('Failed to get response from AI service');
+            return null;
+        }
     };
 
     useEffect(() => {
@@ -92,32 +115,32 @@ const Chatbot = () => {
             sender: 'user',
             timestamp: new Date(),
         };
-        
+
         setMessages(prev => [...prev, userMessage]);
         setInputValue('');
         setIsTyping(true);
         setApiError(null);
 
         try {
-          const aiResponse = await initializeGemini(inputValue);
-          
-          const botMessage: Message = {
-            text: aiResponse || "I couldn't process that request. Please try again.",
-            sender: 'bot',
-            timestamp: new Date(),
-          };
-          
-          setMessages(prev => [...prev, botMessage]);
+            const aiResponse = await initializeGemini(inputValue);
+
+            const botMessage: Message = {
+                text: aiResponse || "I couldn't process that request. Please try again.",
+                sender: 'bot',
+                timestamp: new Date(),
+            };
+
+            setMessages(prev => [...prev, botMessage]);
         } catch (error) {
-          console.error('Error:', error);
-          const errorMessage: Message = {
-            text: "Sorry, I'm experiencing technical difficulties. Please try again later.",
-            sender: 'bot',
-            timestamp: new Date(),
-          };
-          setMessages(prev => [...prev, errorMessage]);
+            console.error('Error:', error);
+            const errorMessage: Message = {
+                text: "Sorry, I'm experiencing technical difficulties. Please try again later.",
+                sender: 'bot',
+                timestamp: new Date(),
+            };
+            setMessages(prev => [...prev, errorMessage]);
         } finally {
-          setIsTyping(false);
+            setIsTyping(false);
         }
     };
 
@@ -145,7 +168,7 @@ const Chatbot = () => {
                     >
                         <div className="flex items-center space-x-2">
                             <Bot size={18} className="text-gray-300" />
-                            <h3 className="font-medium text-white">Portfolio Assistant</h3>
+                            <h3 className="font-medium text-white">Derek's Assistant</h3>
                         </div>
                         <div className="flex items-center space-x-2">
                             <button

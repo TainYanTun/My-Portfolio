@@ -15,37 +15,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Derek's Portfolio",
   description: "A brief showcase of my skills, projects, and more.",
-  authors: [{ name: "Derek" }],
-  keywords: ["portfolio", "developer", "projects", "skills", "Derek"],
-  openGraph: {
-    title: "Derek's Portfolio",
-    description: "A brief showcase of my skills, projects, and more.",
-    url: "https://your-portfolio-url.com",
-    siteName: "Derek's Portfolio",
-    images: [
-      {
-        url: "/webicon.png",
-        width: 800,
-        height: 600,
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
   icons: {
-    icon: "/public/webicon.png",
-    shortcut: "/public/webicon.png",
-    apple: "/webicon.png",
+    icon: "/webicon.png",             // Main browser tab icon
+    shortcut: "/webicon.png",         // Legacy shortcut
+    apple: "/webicon.png",            // iOS Safari
     other: {
       rel: "apple-touch-icon-precomposed",
       url: "/webicon.png",
     },
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Derek's Portfolio",
-    description: "A brief showcase of my skills, projects, and more.",
-    images: ["/webicon.png"],
   },
 };
 

@@ -8,7 +8,7 @@ const Projects = () => {
             title: 'JitCyber Website',
             description: '2025 Hackathon project focused on cybersecurity solutions mainly for Thai users',
             technologies: ['React', 'Next.js', 'MongoDB', 'EmailJS'],
-            image: '/jitcyber.png',
+            image: '/Jitcyber.png',
             github: 'https://github.com/nyilynnhtwe/JitCyber.git',
             demo: '',
         },

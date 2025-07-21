@@ -111,7 +111,7 @@ const About = () => {
                             <br /><br />
                             <a className="text-gray-400 hover:text-red-300">I build accessible, UI focused digital experiences for the web.</a>
                             <br /><br />
-                            For Q&A or general curiosity, You can find more about me on my <a href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" className="underline text-blue-400 hover:text-blue-300">LinkedIn profile</a> or my AI assistant.
+                            For Q&A or general curiosity, You can find more about me on my <a href="https://www.linkedin.com/in/tainyantun/" target="_blank" rel="noopener noreferrer" className="underline text-blue-400 hover:text-blue-300">LinkedIn profile</a> or my AI assistant.
                         </p>
                     </div>
                     <div className="grid md:grid-cols-2 gap-6">

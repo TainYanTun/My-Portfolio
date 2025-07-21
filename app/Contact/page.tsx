@@ -215,7 +215,7 @@ const Contact = () => {
                     </div>
                 </div>
 
-                {/* Social Media Links - UNCHANGED */}
+                {/* Social Media Links -*/}
                 <div className="mt-12 text-center">
                     <div className="mb-4 text-gray-400 flex items-center justify-center gap-2">
                         <span className="h-px w-8 bg-gray-700"></span>
@@ -223,19 +223,38 @@ const Contact = () => {
                         <span className="h-px w-8 bg-gray-700"></span>
                     </div>
                     <div className="flex justify-center gap-4">
-                        <a href="#" className="text-gray-400 hover:text-white transition-colors p-2">
+                        <a
+                            href="https://github.com/TainYanTun"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-white transition-colors p-2"
+                        >
                             <Github size={20} />
                         </a>
-                        <a href="#" className="text-gray-400 hover:text-white transition-colors p-2">
+                        <a
+                            href="https://www.linkedin.com/in/tainyantun/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-white transition-colors p-2"
+                        >
                             <Linkedin size={20} />
                         </a>
-                        <a href="#" className="text-gray-400 hover:text-white transition-colors p-2">
+                        <a
+                            href="https://x.com/Leo_tainyan"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-white transition-colors p-2"
+                        >
                             <Twitter size={20} />
                         </a>
-                        <a href="#" className="text-gray-400 hover:text-white transition-colors p-2">
+                        <a
+                            href="mailto:leotainyan18@gmail.com"
+                            className="text-gray-400 hover:text-white transition-colors p-2"
+                        >
                             <Mail size={20} />
                         </a>
-                    </div>
+                        </div>
+
                 </div>
 
                 <div className="text-center pt-10 mt-10">

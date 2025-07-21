@@ -10,7 +10,7 @@ const Projects = () => {
             technologies: ['React', 'Next.js', 'MongoDB', 'EmailJS'],
             image: '/Jitcyber.png',
             github: 'https://github.com/nyilynnhtwe/JitCyber.git',
-            demo: '',
+            demo: 'https://jit-cyber.vercel.app/',
         },
         {
             title: 'Task Management App',

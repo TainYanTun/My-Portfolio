@@ -15,25 +15,25 @@ const Profile = () => {
     const socialLinks = [
         { 
             icon: <Github size={18} />,
-            href: 'https://github.com/yourusername',
+            href: 'https://github.com/TainYanTun',
             label: 'GitHub',
             color: 'hover:text-gray-300'
         },
         { 
             icon: <Linkedin size={18} />,
-            href: 'https://linkedin.com/in/yourusername',
+            href: 'https://www.linkedin.com/in/tainyantun/',
             label: 'LinkedIn',
             color: 'hover:text-blue-400'
         },
         { 
             icon: <Facebook size={18} />,
-            href: 'https://facebook.com/yourusername',
+            href: 'https://www.facebook.com/Leotainyan/',
             label: 'Facebook',
             color: 'hover:text-blue-500'
         },
         { 
             icon: <Instagram size={18} />,
-            href: 'https://instagram.com/yourusername',
+            href: 'https://www.instagram.com/derek_tainyan/',
             label: 'Instagram',
             color: 'hover:text-pink-500'
         }

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Send, Github, Linkedin, Twitter, Mail } from 'lucide-react';
-import emailjs from '@emailjs/browser';
+import emailjs from '@emailjs/browser';   //Forgot this import statement
 
 type FormField = 'name' | 'email' | 'subject' | 'message';
 

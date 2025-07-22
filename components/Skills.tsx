@@ -97,7 +97,7 @@ const Skills = () => (
                     </p>
                     <div className="flex items-center justify-center space-x-3 text-xs">
                         <a
-                            href="#contact"
+                            href="mailto:leotainyan18@gmail.com"
                             className="text-gray-300 hover:text-white underline flex items-center"
                         >
                             <svg
@@ -117,7 +117,7 @@ const Skills = () => (
                         </a>
                         <span className="text-gray-600">•</span>
                         <a
-                            href="/privacy"
+                            href="/Policy"
                             className="text-gray-300 hover:text-white underline flex items-center"
                         >
                             <svg

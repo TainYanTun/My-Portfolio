@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: "Derek's Portfolio",
   description: "A brief showcase of my skills, projects, and more.",
   authors: [{ name: "Tain Yan Tun" }],
-  keywords: ["portfolio", "developer", "projects", "skills", "Derek","Tain Yan Tun,", "web developer", "software engineer", "student portfolio"],
+  keywords: ["portfolio", "developer", "projects", "skills", "Derek","Tain Yan Tun", "web developer", "software engineer", "student portfolio"],
   openGraph: {
     title: "Derek's Portfolio",
     description: "A brief showcase of my skills, projects, and more.",
@@ -25,28 +25,28 @@ export const metadata: Metadata = {
     siteName: "Derek's Portfolio",
     images: [
       {
-        url: "/webicon.png",
-        width: 800,
-        height: 600,
+        url: "/banner.png",
+        width: 1000,
+        height: 1000,
       },
     ],
     locale: "en_US",
     type: "website",
   },
   icons: {
-    icon: "/webicon.png",
-    shortcut: "/webicon.png",
-    apple: "/webicon.png",
+    icon: "/banner.png",
+    shortcut: "/webicon.svg",
+    apple: "/webicon.svg",
     other: {
       rel: "apple-touch-icon-precomposed",
-      url: "/webicon.png",
+      url: "/banner.png",
     },
   },
   twitter: {
     card: "summary_large_image",
     title: "Derek's Portfolio",
     description: "A brief showcase of my skills, projects, and more.",
-    images: ["/webicon.png"],
+    images: ["/banner.png"],
   },
 };
 

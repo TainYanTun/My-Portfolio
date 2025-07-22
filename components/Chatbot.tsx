@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, ChevronDown, ChevronUp } from 'lucide-react';
+import { X, Send, Bot, ChevronDown, ChevronUp } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 type Message = {
@@ -88,7 +88,7 @@ const Chatbot = () => {
             return response.text();
         } catch (error) {
             console.error('Gemini API Error:', error);
-            setApiError('Failed to get response from AI service');
+            setApiError('The AI service is currently overloaded (too many users). Please try again later.');
             return null;
         }
     };
@@ -125,7 +125,7 @@ const Chatbot = () => {
             const aiResponse = await initializeGemini(inputValue);
 
             const botMessage: Message = {
-                text: aiResponse || "I couldn't process that request. Please try again.",
+                text: aiResponse || "I'm currently experiencing high traffic. Please try your question again in a moment.",
                 sender: 'bot',
                 timestamp: new Date(),
             };
@@ -134,7 +134,7 @@ const Chatbot = () => {
         } catch (error) {
             console.error('Error:', error);
             const errorMessage: Message = {
-                text: "Sorry, I'm experiencing technical difficulties. Please try again later.",
+                text: "Sorry, I'm currently experiencing high traffic (too many users). Please try your question again in a moment.",
                 sender: 'bot',
                 timestamp: new Date(),
             };
@@ -263,7 +263,7 @@ const Chatbot = () => {
                     aria-label="Open chat"
                 >
                     <span className="absolute inset-0 bg-gradient-to-r from-gray-300/10 via-gray-300/30 to-gray-300/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -translate-x-full group-hover:translate-x-0" />
-                    <MessageCircle size={24} className="relative text-black" />
+                    <Bot size={24} className="relative text-black" />
                     {messages.length === 1 && (
                         <span className="absolute top-2 right-2 w-2 h-2 bg-gray-600 rounded-full animate-pulse" />
                     )}

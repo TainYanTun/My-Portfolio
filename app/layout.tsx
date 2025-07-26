@@ -34,12 +34,12 @@ export const metadata: Metadata = {
     type: "website",
   },
   icons: {
-    icon: "/banner.png",
+    icon: "/webicon.svg",
     shortcut: "/webicon.svg",
     apple: "/webicon.svg",
     other: {
       rel: "apple-touch-icon-precomposed",
-      url: "/banner.png",
+      url: "/webicon.svg",
     },
   },
   twitter: {

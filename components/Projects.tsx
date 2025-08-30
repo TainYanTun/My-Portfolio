@@ -16,7 +16,7 @@ const Projects = () => {
             title: 'Decentralized Movie Review App',
             description: 'A blockchain-based application for secure and transparent movie reviews (Coming Soon)',
             technologies: ['TypeScript', 'React', 'MongoDB', 'Worldchain',],
-            image: '/flickshare.png',
+            image: '/Flickshare.png',
             github: '',
             demo: 'https://flickshare-landing.vercel.app/',
         },

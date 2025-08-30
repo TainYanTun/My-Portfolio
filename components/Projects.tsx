@@ -13,12 +13,12 @@ const Projects = () => {
             demo: 'https://jit-cyber.vercel.app/',
         },
         {
-            title: 'Task Management App',
-            description: 'Collaborative task management with real-time updates and team features',
-            technologies: ['TypeScript', 'React', 'Firebase', 'Tailwind'],
-            image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800',
-            github: '#',
-            demo: '#',
+            title: 'Decentralized Movie Review App',
+            description: 'A blockchain-based application for secure and transparent movie reviews (Coming Soon)',
+            technologies: ['TypeScript', 'React', 'MongoDB', 'Worldchain',],
+            image: '/flickshare.png',
+            github: '',
+            demo: 'https://flickshare-landing.vercel.app/',
         },
     ];
 
